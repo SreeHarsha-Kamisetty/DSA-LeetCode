@@ -1,29 +1,26 @@
 class Solution {
     public int countStudents(int[] students, int[] sandwiches) {
-        int one_count =0;
-        int zero_count =0;
+        Stack<Integer> st = new Stack<>();
+        Queue<Integer> q = new LinkedList<>();
         for(int i: students){
-            if(i==1) one_count++;
-            else zero_count++;
+            q.add(i);
         }
-        for(int i: sandwiches){
-            if(i == 1){
-                if(one_count >0){
-                    one_count--;
-                }
-                else{
-                    return zero_count;
-                }
+        int n = sandwiches.length;
+        for(int i=n-1;i>=0;i--){
+            st.push(sandwiches[i]);
+        }
+        int count =0;
+        while(count <=1000 && !st.isEmpty()){
+            while(count<=1000 && (q.peek() != st.peek())){
+                int a = q.remove();
+                q.add(a);
+                count++;
             }
-            else{
-                if(zero_count >0){
-                    zero_count--;
-                }
-                else{
-                    return one_count;
-                }
+            if(q.peek() == st.peek()){
+                q.remove();
+                st.pop();
             }
         }
-        return 0;
+        return st.size();
     }
 }
